@@ -74,7 +74,7 @@ setState(() {
               )  
               )
               ),
-              )
+              ),
               SizedBox(height: 40,),
               ElevatedButton(onPressed: enviar, child: Text("Enviar")),
               Text (resultado,style: TextStyle(fontSize: 30, color: colorRespuesta)),
