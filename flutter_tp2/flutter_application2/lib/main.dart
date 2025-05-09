@@ -21,8 +21,9 @@ String resultado = "";
 Color colorRespuesta = Colors.white;
 String username = "Oktubre86";
 String password = "PatricioRey";
-void enviar(){
-setState(() {
+
+void enviar(BuildContext context){ //A la funcion le añadi el buildcotext context, esto es para marcarle masomenos el lugar donde va a estar cituado, 
+setState(() {  //El snack bar depende de un contexto para geerarse, Este contexto tiene que estar despues del scaffold porque si no no se puede generar.
   usuarioPuesto =textoUsuario.text;
   contraPuesta =textoContra.text;
   if(usuarioPuesto==""){
@@ -45,44 +46,74 @@ setState(() {
   resultado = "Correcto, logeandose..."; //correcto
   colorRespuesta = const Color.fromARGB(255, 32, 250, 3);
   }
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(resultado),duration:  Duration(seconds: 2),));
+  // De esta manera se llama al snackbar, el contexto tiee que construirse despues del scaffold.
 });
 }
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(                           //Esto setea el sacffold, que seria la base de la fotografia
-        body: Align(                            //Aca pongo un alignment, que sirve para setear el LUGAR
-          alignment: Alignment.center,          //Alignment.locacion
-          child: Column(                        //Child es singular, las columnas o row tienen children, que son varios
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(height: 60),
-              Text ("Logeate",style: TextStyle(fontSize: 40, color: Colors.black)),
-              SizedBox(height: 40,width: 200,
-              child: TextField(controller: textoUsuario,)
-              ),
-              SizedBox(height: 40,width: 200,
-              child: TextField(controller: textoContra,obscureText: textoobscuro,decoration: InputDecoration(
-              suffixIcon: IconButton(
-                icon: Icon(
-                  textoobscuro ? Icons.visibility_off : Icons.visibility
-                ), onPressed: (){
-                  setState((){
-                    textoobscuro = !textoobscuro;
-                  });
-                },
-              )  
-              )
-              ),
-              ),
-              SizedBox(height: 40,),
-              ElevatedButton(onPressed: enviar, child: Text("Enviar")),
-              Text (resultado,style: TextStyle(fontSize: 30, color: colorRespuesta)),
-
-            ],
-          ),
-        ),
+ @override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    home: Scaffold( // Esto setea el Scaffold, que sería la base de la pantalla
+      body: Builder(
+        builder: (BuildContext context) { //Aca estoy seteando un nuevo buildcotext cotext, 
+          return Align(
+            alignment: Alignment.center,
+            child: Column( // Column tiene children (plural)
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(height: 60),
+                Text(
+                  "Logeate",
+                  style: TextStyle(fontSize: 40, color: Colors.black),
+                ),
+                SizedBox(
+                  height: 40,
+                  width: 200,
+                  child: TextField(controller: textoUsuario, decoration: 
+                  InputDecoration(
+                    border: OutlineInputBorder(),labelText: "Usuario"
+                    ),
+                  ),
+                ),
+                SizedBox(
+                 height: 17, //Uso muchas para tener todo divididos.
+                ),
+                SizedBox(
+                  height: 40,
+                  width: 200,
+                  child: TextField(
+                    controller: textoContra,
+                    obscureText: textoobscuro,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Contraseña",
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          textoobscuro
+                              ? Icons.visibility_off : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            textoobscuro = !textoobscuro;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 40),
+                ElevatedButton(
+                  onPressed: () => enviar(context), //Como enviar es una void que no devuelve nada hay que indicarle de esta manera particular
+                  child: Text("Enviar"),
+                ),
+          
+              ],
+            ),
+          );
+        },
       ),
-    );
-  }
+    ),
+  );
+}
 }
