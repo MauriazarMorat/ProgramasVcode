@@ -14,7 +14,7 @@ class MainAppState extends State<MainApp> {                //Se define que esa v
 TextEditingController textoUsuario = TextEditingController();  
 TextEditingController textoContra = TextEditingController();                                                    //Final fuciona como define
                                                     //Lo hice para que las cajitas tengan sus propias medidas y sean todas iguales
-                                                   //Las variables tienen el _ al principio porque son privadas? Tiene un sentido detras, me gusta que sean prolijas tambien
+bool textoobscuro=true;                                                   //Las variables tienen el _ al principio porque son privadas? Tiene un sentido detras, me gusta que sean prolijas tambien
 String usuarioPuesto ="NoInput";
 String contraPuesta ="NoInput"; 
 String resultado = "";
@@ -62,7 +62,18 @@ setState(() {
               child: TextField(controller: textoUsuario,)
               ),
               SizedBox(height: 40,width: 200,
-              child: TextField(controller: textoContra,obscureText: true,)
+              child: TextField(controller: textoContra,obscureText: textoobscuro,decoration: InputDecoration(
+              suffixIcon: IconButton(
+                icon: Icon(
+                  textoobscuro ? Icons.visibility_off : Icons.visibility
+                ), onPressed: (){
+                  setState((){
+                    textoobscuro = !textoobscuro;
+                  });
+                },
+              )  
+              )
+              ),
               ),
               SizedBox(height: 40,),
               ElevatedButton(onPressed: enviar, child: Text("Enviar")),
