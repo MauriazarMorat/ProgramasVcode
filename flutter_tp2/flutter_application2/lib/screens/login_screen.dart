@@ -1,6 +1,7 @@
 import 'package:flutter_application2/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_application2/entities/user.dart';
 
 class LoginScreen extends StatelessWidget{
   static const String name = 'login';
@@ -21,34 +22,42 @@ class _LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<_LoginView> {
   // Variables
-  TextEditingController textoUsuario = TextEditingController();  
+  TextEditingController textoEmail = TextEditingController();  
   TextEditingController textoContra = TextEditingController(); 
 
   bool textoobscuro = true;
-  String usuarioPuesto = "NoInput";
+  String emailPuesto = "NoInput";
   String contraPuesta = "NoInput"; 
   String resultado = "";
   Color colorRespuesta = Colors.white;
-  String username = "Oktubre86";
-  String password = "PatricioRey";
+  String? encontrarUsuario (String usuarioabuscar){
 
+  }
+  
   void enviar(BuildContext context) {
-    usuarioPuesto = textoUsuario.text;
+    emailPuesto = textoEmail.text;
     contraPuesta = textoContra.text;
 
-    if (usuarioPuesto == "" && contraPuesta == "") {
-      resultado = "No pusiste nada, jaja";
+    if (emailPuesto == "" && contraPuesta == "") {
+      resultado = "No pusiste nada";
       colorRespuesta = const Color.fromARGB(255, 138, 173, 8);
-    } else if (usuarioPuesto == "") {
+    } else if (emailPuesto == "" && contraPuesta!="") {
       resultado = "No pusiste Usuario";
       colorRespuesta = const Color.fromARGB(255, 209, 33, 21);
-    } else if (contraPuesta == "") {
-      resultado = "No pusiste Contraseña";
+      //Como funciona any, busca si se cumple una condicion de un elemento de una lista. En este caso
+      //Busca en la lista users, iterando sobre User bajo el nombre de "usuario", fijandose si su.email 
+      //equivale
+    } else if (contraPuesta == ""&& users.any((usuario) => usuario.email == emailPuesto)) {
+      resultado = "Ese email existe, pero no pusiste contraseña";
       colorRespuesta = const Color.fromARGB(255, 209, 33, 21);
-    } else if (usuarioPuesto == username && contraPuesta == password) {
+    }else if (users.any((usuario) => usuario.email == emailPuesto) && (contraPuesta!="" && )) {
+      resultado = "Ese email existe, pero no es LA contraseña";
+      colorRespuesta = const Color.fromARGB(255, 209, 33, 21);
+    }  
+    else if (emailPuesto == username && contraPuesta == password) {
       resultado = "Correcto, logeandose...";
       colorRespuesta = const Color.fromARGB(255, 32, 250, 3);
-      context.pushNamed(HomeScreen.name, extra: textoUsuario.text);
+      context.pushNamed(HomeScreen.name, extra: textoEmail.text);
     } else {
       resultado = "Contraseña/Usuario incorrectos";
       colorRespuesta = const Color.fromARGB(255, 209, 33, 21);
@@ -72,10 +81,10 @@ class _LoginViewState extends State<_LoginView> {
           SizedBox(
             width: 200,
             child: TextField(
-              controller: textoUsuario,
+              controller: textoEmail,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: "Usuario",
+                labelText: "Email",
               ),
             ),
           ),
