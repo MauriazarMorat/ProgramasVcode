@@ -30,8 +30,9 @@ class _LoginViewState extends State<_LoginView> {
   String contraPuesta = "NoInput"; 
   String resultado = "";
   Color colorRespuesta = Colors.white;
-  String? encontrarUsuario (String usuarioabuscar){
-
+  
+  User encontrarUsuario (String usuarioabuscar){
+    return users.firstWhere((user) => user.email == usuarioabuscar);
   }
   
   void enviar(BuildContext context) {
@@ -47,22 +48,21 @@ class _LoginViewState extends State<_LoginView> {
       //Como funciona any, busca si se cumple una condicion de un elemento de una lista. En este caso
       //Busca en la lista users, iterando sobre User bajo el nombre de "usuario", fijandose si su.email 
       //equivale
-    } else if (contraPuesta == ""&& users.any((usuario) => usuario.email == emailPuesto)) {
-      resultado = "Ese email existe, pero no pusiste contraseña";
-      colorRespuesta = const Color.fromARGB(255, 209, 33, 21);
-    }else if (users.any((usuario) => usuario.email == emailPuesto) && (contraPuesta!="" && )) {
-      resultado = "Ese email existe, pero no es LA contraseña";
-      colorRespuesta = const Color.fromARGB(255, 209, 33, 21);
-    }  
-    else if (emailPuesto == username && contraPuesta == password) {
-      resultado = "Correcto, logeandose...";
-      colorRespuesta = const Color.fromARGB(255, 32, 250, 3);
-      context.pushNamed(HomeScreen.name, extra: textoEmail.text);
-    } else {
-      resultado = "Contraseña/Usuario incorrectos";
-      colorRespuesta = const Color.fromARGB(255, 209, 33, 21);
-    }
-
+    } else if (users.any((usuario) => usuario.email == emailPuesto)) {
+      User userEncontrado =encontrarUsuario(emailPuesto);
+      if(contraPuesta==""){
+        resultado = "Ese email existe, pero no pusiste contraseña";
+        colorRespuesta = const Color.fromARGB(255, 209, 33, 21);
+      }
+      if(userEncontrado.contrasena != contraPuesta){
+        resultado = "Contraseña incorrecta";
+        colorRespuesta = const Color.fromARGB(255, 209, 33, 21);
+      }
+      if(userEncontrado.contrasena == contraPuesta){
+        resultado = "Correcto, logeandose...";
+        colorRespuesta = const Color.fromARGB(255, 32, 250, 3);
+        context.pushNamed(HomeScreen.name, extra: userEncontrado.nombre);
+      }
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(resultado), duration: Duration(seconds: 2)),
     );
