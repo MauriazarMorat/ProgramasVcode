@@ -1,4 +1,4 @@
-import 'package:flutter_application2/screens/home_screen.dart';
+import 'package:flutter_application2/screens/game_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_application2/entities/user.dart';
@@ -54,18 +54,19 @@ class _LoginViewState extends State<_LoginView> {
         resultado = "Ese email existe, pero no pusiste contraseña";
         colorRespuesta = const Color.fromARGB(255, 209, 33, 21);
       }
-      if(userEncontrado.contrasena != contraPuesta){
+      if(userEncontrado.contrasena != contraPuesta && userEncontrado.contrasena!=""){
         resultado = "Contraseña incorrecta";
         colorRespuesta = const Color.fromARGB(255, 209, 33, 21);
       }
       if(userEncontrado.contrasena == contraPuesta){
         resultado = "Correcto, logeandose...";
         colorRespuesta = const Color.fromARGB(255, 32, 250, 3);
-        context.pushNamed(HomeScreen.name, extra: userEncontrado.nombre);
+        context.goNamed(GameScreen.name, extra: userEncontrado.nombre);
       }
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(resultado), duration: Duration(seconds: 2)),
     );
+  }
   }
 
   @override
