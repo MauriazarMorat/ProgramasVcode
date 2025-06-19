@@ -1,7 +1,14 @@
+import 'package:flutter_application2/providers/game_provider.dart';
+import 'package:flutter_application2/providers/user_provider.dart';
+import 'package:flutter_application2/screens/game_detail_screen.dart';
 import 'package:flutter_application2/screens/game_screen.dart';
+import 'package:flutter_application2/screens/game_add_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_application2/entities/user.dart';
+import 'package:flutter_application2/entities/game.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_application2/providers/game_provider.dart';
 
 class LoginScreen extends StatelessWidget{
   static const String name = 'login';
@@ -15,12 +22,12 @@ class LoginScreen extends StatelessWidget{
  }
 }
 
-class _LoginView extends StatefulWidget {
+class _LoginView extends ConsumerStatefulWidget {
   @override
-  State<_LoginView> createState() => _LoginViewState();
+  ConsumerState<_LoginView> createState() => _LoginViewState(); //Cuando se hace un estado es así jaja
 }
 
-class _LoginViewState extends State<_LoginView> {
+class _LoginViewState extends ConsumerState<_LoginView> {
   // Variables
   TextEditingController textoEmail = TextEditingController();  
   TextEditingController textoContra = TextEditingController(); 
@@ -61,7 +68,9 @@ class _LoginViewState extends State<_LoginView> {
       if(userEncontrado.contrasena == contraPuesta){
         resultado = "Correcto, logeandose...";
         colorRespuesta = const Color.fromARGB(255, 32, 250, 3);
-        context.goNamed(GameScreen.name, extra: userEncontrado.nombre);
+        ref.read(userProvider.notifier).state = userEncontrado.nombre;
+        context.goNamed(GameScreen.name,);
+
       }
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(resultado), duration: Duration(seconds: 2)),

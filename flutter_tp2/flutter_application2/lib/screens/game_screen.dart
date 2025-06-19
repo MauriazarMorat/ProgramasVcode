@@ -1,40 +1,74 @@
+import 'package:flutter_application2/providers/game_provider.dart';
+import 'package:flutter_application2/providers/user_provider.dart';
 import 'package:flutter_application2/screens/game_detail_screen.dart';
 import 'package:flutter_application2/screens/game_screen.dart';
+import 'package:flutter_application2/screens/game_add_screen.dart';
+import 'package:flutter_application2/screens/game_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_application2/entities/user.dart';
 import 'package:flutter_application2/entities/game.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_application2/providers/game_provider.dart';
 
-
-class GameScreen extends StatelessWidget {
+class GameScreen extends ConsumerWidget {
   static const String name = 'game';
-  final String userName;
-  final List<Game> gameList = games;
-  GameScreen({super.key, required this.userName});
+  
+
+  
+ const  GameScreen({super.key});
   
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,ref) {
+    final userName = ref.watch(userProvider);
+    final gameList = ref.watch(gamesProvider);
     return Scaffold(
       appBar: AppBar(
         title:  Text('Welcome $userName'),
       ),
-      body: _GamesView(gameList: gameList),
+      body: _GamesView(),
+      floatingActionButton: FloatingActionButton(onPressed:()
+      {
+        _goToGameAdd(context,gameList.length);
+      },child: Icon(Icons.add),),
     );
   }
 }
 
-class _GamesView extends StatelessWidget{
-  final List<Game> gameList;
-
-  const _GamesView({super.key, required this.gameList});
-  
+class _GamesView extends ConsumerWidget{
+  const _GamesView({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,ref) {
+    final gameList = ref.watch(gamesProvider);
     return ListView.builder(
       itemCount: gameList.length,
       itemBuilder: (context, index) {
         final game = gameList[index];
         return GestureDetector(
+          onLongPress: () {
+            showModalBottomSheet(context: context, builder: (context){
+              return Column(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.edit),
+                    title: Text("editar"),
+                    onTap: (){
+                      Navigator.of(context).pop(); //Cierra el modalbottomsheet
+                       _goToGameEdit(context,game.id);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.delete),
+                    title: Text("Eliminar"),
+                    onTap: (){
+                      Navigator.of(context).pop(); // Para cerrarlolo
+                       _gameDelete(context,ref,game.id,);
+                    },
+                  )
+                ],
+              );
+            });
+          },
           onTap: (){
             _goToGameDetails(context,game);
           }, //Card crea las targetitas
@@ -86,4 +120,24 @@ class _GamesView extends StatelessWidget{
 
 void _goToGameDetails(BuildContext context, Game game){
   context.pushNamed(GameDetailScreen.name,extra: game,);
+}
+
+void _goToGameAdd(BuildContext context, int id){
+  context.pushNamed(GameAddScreen.name,extra: id,);
+}
+
+void _goToGameEdit(BuildContext context, int id){
+  context.pushNamed(GameEditScreen.name,extra: id,);
+}
+
+void _gameDelete(BuildContext context,ref, int givenId){
+
+final List<Game> gameList = ref.watch(gamesProvider);
+Game selectedGame = gameList.firstWhere((game) => game.id == givenId);
+int index = gameList.indexWhere((game) => game.id == selectedGame.id);
+
+List<Game> nuevaLista = [...gameList];
+nuevaLista.removeAt(index);
+ref.read(gamesProvider.notifier).state = [...nuevaLista];
+
 }

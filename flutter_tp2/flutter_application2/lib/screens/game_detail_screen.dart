@@ -49,7 +49,7 @@ class GameDetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            selectedGame.description,
+            selectedGame.hardDescription,
             style: const TextStyle(fontSize: 18),
           ),
           const SizedBox(height: 8),
