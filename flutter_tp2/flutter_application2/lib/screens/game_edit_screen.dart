@@ -16,7 +16,7 @@ const  GameEditScreen({super.key, required this.givenId});
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Añadir Juego'),
+        title:  Text('Editar Juego'),
       ),
       body: _GamesEdit(givenId: givenId),
       
@@ -25,7 +25,7 @@ const  GameEditScreen({super.key, required this.givenId});
 }
 class _GamesEdit extends ConsumerWidget {
   final int givenId;
-  _GamesEdit({super.key, required this.givenId});
+  _GamesEdit({required this.givenId});
 
   final TextEditingController ngName = TextEditingController();
   final TextEditingController ngDescription = TextEditingController();
@@ -55,6 +55,22 @@ class _GamesEdit extends ConsumerWidget {
                 width: 150,
                 height: 200,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                 'assets/GenericGamePoster.jpg', // Ruta a tu imagen local
+                  width: 150,
+                  height: 200,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                 'assets/GenericGamePoster.jpg', // Ruta a tu imagen local
+                  width: 100,
+                  height: 150,
+                  fit: BoxFit.cover,
+                  );
+                },
+                  );
+                },
               ),
             ),
             SizedBox(height: 30),
