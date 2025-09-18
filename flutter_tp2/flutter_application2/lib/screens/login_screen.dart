@@ -1,14 +1,9 @@
-import 'package:flutter_application2/providers/game_provider.dart';
 import 'package:flutter_application2/providers/user_provider.dart';
-import 'package:flutter_application2/screens/game_detail_screen.dart';
 import 'package:flutter_application2/screens/game_screen.dart';
-import 'package:flutter_application2/screens/game_add_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_application2/entities/user.dart';
-import 'package:flutter_application2/entities/game.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_application2/providers/game_provider.dart';
 
 class LoginScreen extends StatelessWidget{
   static const String name = 'login';

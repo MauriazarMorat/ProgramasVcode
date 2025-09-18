@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "392561384256",
+    "project_id": "flutterapplication2-b04db",
+    "storage_bucket": "flutterapplication2-b04db.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392561384256:android:4b07b0708f2103ba2cb8a5",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKKY2P6YNsqa7KcwbvboIDiEdQUYizl8k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392561384256:android:4e425cfb10d0e3fa2cb8a5",
+        "android_client_info": {
+          "package_name": "com.example.myapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKKY2P6YNsqa7KcwbvboIDiEdQUYizl8k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
