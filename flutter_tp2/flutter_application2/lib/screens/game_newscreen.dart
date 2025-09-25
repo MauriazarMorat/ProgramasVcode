@@ -1,5 +1,5 @@
-import 'package:flutter_application2/providers/game_provider.dart';
 import 'package:flutter_application2/providers/game_newprovider.dart';
+import 'package:flutter_application2/providers/game_provider.dart';
 import 'package:flutter_application2/providers/user_provider.dart';
 import 'package:flutter_application2/screens/game_detail_screen.dart';
 import 'package:flutter_application2/screens/game_add_screen.dart';
@@ -9,35 +9,50 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_application2/entities/game.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GameScreen extends ConsumerWidget {
-  static const String name = 'game';
-  
- const  GameScreen({super.key});
- 
+
+class GameNewScreen extends ConsumerStatefulWidget {
+  static const String name = 'game_new';
+ const  GameNewScreen({super.key});
   
   @override
-  Widget build(BuildContext context,ref) {
-    final userName = ref.watch(userProvider);
-    final gameList = ref.watch(gamesProvider);
+  ConsumerState<GameNewScreen> createState() => _GameNewScreenState();
+}
+
+class _GameNewScreenState extends ConsumerState<GameNewScreen> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(gameNewProvider.notifier).getAllGames();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<Game> gameList = ref.watch(gameNewProvider);
     return Scaffold(
-      appBar: AppBar(
-        title:  Text('Welcome $userName'),
-      ),
-      body: _GamesView(),
-      floatingActionButton: FloatingActionButton(onPressed:()
-      {
-        _goToGameAdd(context,gameList.length);
-      },child: Icon(Icons.add),),
-    );
+        appBar: AppBar(
+          title: Text('Games'),
+        ),
+        body: _GamesView(
+          gameList: gameList,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            context.pushNamed(GameAddScreen.name,extra: gameList.length,);
+          },
+          child: const Icon(Icons.add),
+        ));
   }
 }
 
-class _GamesView extends ConsumerWidget{
-  
-  const _GamesView();
+class _GamesView extends StatelessWidget {
+  List<Game> gameList;
+  _GamesView({
+    required this.gameList,
+    super.key,
+  });
+
   @override
-  Widget build(BuildContext context,ref) {
-    final gameList = ref.watch(gamesProvider);
+  Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: gameList.length,
       itemBuilder: (context, index) {
@@ -52,23 +67,16 @@ class _GamesView extends ConsumerWidget{
                     title: Text("editar"),
                     onTap: (){
                       Navigator.of(context).pop(); //Cierra el modalbottomsheet
-                       _goToGameEdit(context,game.id);
+                       context.pushNamed(GameEditScreen.name,extra: game.id,);
                     },
                   ),
-                  ListTile(
-                    leading: Icon(Icons.delete),
-                    title: Text("Eliminar"),
-                    onTap: (){
-                      Navigator.of(context).pop(); // Para cerrarlolo
-                       _gameDelete(context,ref,game.id,);
-                    },
-                  )
+                  
                 ],
               );
             });
           },
           onTap: (){
-            _goToGameDetails(context,game);
+            context.pushNamed(GameDetailScreen.name,extra: game,);
           }, //Card crea las targetitas
           child: Card(
           margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -79,14 +87,21 @@ class _GamesView extends ConsumerWidget{
           padding: EdgeInsets.all(4), //Rebordes hacia adentro de 4
           child: Row(
             children: [
-              ClipRRect( //Crea un reactangulo con bordes redondeados
-                borderRadius: BorderRadius.circular(4), //redondea los bordes 
-                child: Image.network( //la funciona que busca la image
-                  game.posterUrl, //imagen
-                  width: 100, //achura
-                  height: 150, //altura
-                )
-              ),SizedBox(width: 12,),
+              SizedBox(
+  width: 100,
+  height: 150,
+  child: Image.network(
+    game.posterUrl,
+    fit: BoxFit.cover,
+    errorBuilder: (context, error, stackTrace) {
+      return Image.asset(
+        'assets/GenericGamePoster.jpg',
+        fit: BoxFit.cover,
+      );
+    },
+  ),
+),
+              SizedBox(width: 12,),
               Expanded(child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -113,29 +128,29 @@ class _GamesView extends ConsumerWidget{
         );
       },
     );
+  }
 }
+class _GameItemView extends StatelessWidget {
+  final Game game;
+
+  const _GameItemView({
+    required this.game,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        title: Text(game.name),
+        subtitle: Text(game.description),
+        trailing: const Icon(Icons.arrow_forward_ios),
+        onTap: () {
+          Navigator.of(context).pop(); //Cierra el modalbottomsheet
+          context.pushNamed(GameDetailScreen.name,extra: game.id,);
+        },
+      ),
+    );
+  }
 }
 
-void _goToGameDetails(BuildContext context, Game game){
-  context.pushNamed(GameDetailScreen.name,extra: game,);
-}
 
-void _goToGameAdd(BuildContext context, int id){
-  context.pushNamed(GameAddScreen.name,extra: id,);
-}
-
-void _goToGameEdit(BuildContext context, int id){
-  context.pushNamed(GameEditScreen.name,extra: id,);
-}
-
-void _gameDelete(BuildContext context,ref, int givenId){
-
-final List<Game> gameList = ref.watch(gamesProvider);
-Game selectedGame = gameList.firstWhere((game) => game.id == givenId);
-int index = gameList.indexWhere((game) => game.id == selectedGame.id);
-
-List<Game> nuevaLista = [...gameList];
-nuevaLista.removeAt(index);
-ref.read(gamesProvider.notifier).state = [...nuevaLista];
-
-}

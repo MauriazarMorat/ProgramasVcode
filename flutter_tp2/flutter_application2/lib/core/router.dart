@@ -1,4 +1,5 @@
 import 'package:flutter_application2/screens/game_screen.dart';
+import 'package:flutter_application2/screens/game_newscreen.dart';
 import 'package:flutter_application2/screens/login_screen.dart';
 import 'package:flutter_application2/screens/game_detail_screen.dart';
 import 'package:flutter_application2/screens/game_add_screen.dart';
@@ -32,6 +33,11 @@ final appRouter = GoRouter(
       name: GameEditScreen.name,
       path: '/game_edit',
       builder: (context, state) => GameEditScreen(givenId: state.extra as int,),
+      ),
+      GoRoute(
+      name: GameNewScreen.name,
+      path: '/game_new',
+      builder: (context, state) => GameNewScreen(),
       ),
 
   ],

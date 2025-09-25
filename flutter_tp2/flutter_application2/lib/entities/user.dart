@@ -17,6 +17,7 @@ List<User> users = [
     User("marcelotinelli@gmail.com","Showmatch","Marce","Palermo"),
     User("romanotero9@gmail.com","Futbol100","Roman","Palermo"),
     User("ArbasetiFelipe@gmail.com","OtakuFurro","Feli","Once"),
-    User("1001dalmatas@gmail.com","101dalmata","1dalmata","Londres")
+    User("1001dalmatas@gmail.com","101dalmata","1dalmata","Londres"),
+    User("1","1","1dalmata","Londres")
   ];
  

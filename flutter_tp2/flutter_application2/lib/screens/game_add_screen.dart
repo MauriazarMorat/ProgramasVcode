@@ -1,5 +1,7 @@
+import 'package:flutter_application2/providers/game_newprovider.dart';
 import 'package:flutter_application2/providers/game_provider.dart';
 import 'package:flutter_application2/screens/game_screen.dart';
+import 'package:flutter_application2/screens/game_newscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_application2/entities/game.dart';
@@ -110,7 +112,7 @@ class _GamesAdd extends ConsumerWidget {
             ),
             SizedBox(height: 40),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 Game newGame = Game(
                   id: givenId + 1,
                   name: ngName.text,
@@ -120,13 +122,8 @@ class _GamesAdd extends ConsumerWidget {
                   posterUrl: ngPosterUrl.text,
                   studio: ngStudio.text,
                 );
-                List<Game> listaNueva = ref.read(gamesProvider.notifier).state;
-
-                ref.read(gamesProvider.notifier).state = [
-                  ...listaNueva,
-                  newGame,
-                ];
-                context.goNamed(GameScreen.name);
+                await ref.read(gameNewProvider.notifier).addGame(newGame);
+                context.goNamed(GameNewScreen.name);
               },
               child: Text("Agregar"),
             ),

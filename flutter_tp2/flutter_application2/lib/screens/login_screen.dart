@@ -1,5 +1,5 @@
 import 'package:flutter_application2/providers/user_provider.dart';
-import 'package:flutter_application2/screens/game_screen.dart';
+import 'package:flutter_application2/screens/game_newscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_application2/entities/user.dart';
@@ -64,7 +64,7 @@ class _LoginViewState extends ConsumerState<_LoginView> {
         resultado = "Correcto, logeandose...";
         colorRespuesta = const Color.fromARGB(255, 32, 250, 3);
         ref.read(userProvider.notifier).state = userEncontrado.nombre;
-        context.goNamed(GameScreen.name,);
+        context.goNamed(GameNewScreen.name,);
 
       }
     ScaffoldMessenger.of(context).showSnackBar(

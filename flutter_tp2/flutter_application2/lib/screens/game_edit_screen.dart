@@ -1,5 +1,6 @@
 import 'package:flutter_application2/providers/game_provider.dart';
 import 'package:flutter_application2/screens/game_screen.dart';
+import 'package:flutter_application2/screens/game_newscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_application2/entities/game.dart';
@@ -126,7 +127,7 @@ class _GamesEdit extends ConsumerWidget {
                 nuevaLista[index] = editedGame;
                 ref.read(gamesProvider.notifier).state = nuevaLista;
 
-                context.goNamed(GameScreen.name);
+                context.goNamed(GameNewScreen.name);
               },
               child: Text("Editar"),
             ),
