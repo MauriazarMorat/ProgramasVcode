@@ -1,39 +1,55 @@
 import 'package:flutter_application2/providers/game_provider.dart';
 import 'package:flutter_application2/screens/game_screen.dart';
-import 'package:flutter_application2/screens/game_newscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_application2/entities/game.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GameEditScreen extends StatelessWidget{
-static const String name = 'game_edit';
-final int givenId;
-const  GameEditScreen({super.key, required this.givenId});
- @override
+class GameEditScreen extends ConsumerStatefulWidget {
+  static const String name = 'game_edit';
+  final Game givenGame;
+  const  GameEditScreen({super.key,required this.givenGame});
+  
+  @override
+  ConsumerState<GameEditScreen> createState() => _GameEditScreenState();
+}
+
+class _GameEditScreenState extends ConsumerState<GameEditScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:  Text('Editar Juego'),
-      ),
-      body: _GamesEdit(givenId: givenId),
-      
-    );
+        appBar: AppBar(
+          title: Text('Game Edit'),
+        ),
+        body: _GamesEdit(
+          givenGame: widget.givenGame,
+        ),
+        
+        );
   }
 }
-class _GamesEdit extends ConsumerWidget {
-  final int givenId;
-  _GamesEdit({required this.givenId});
 
+class _GamesEdit extends ConsumerWidget {
+  final Game givenGame;
+  _GamesEdit({required this.givenGame});
+  
   final TextEditingController ngName = TextEditingController();
   final TextEditingController ngDescription = TextEditingController();
   final TextEditingController ngHardDescription = TextEditingController();
   final TextEditingController ngPegi = TextEditingController();
+  
+  
+
 
   @override
   Widget build(BuildContext context, ref) {
-    final gameList = ref.watch(gamesProvider);
-    Game selectedGame = gameList.firstWhere((game) => game.id == givenId);
+    List<Game> gameList = ref.watch(gameProvider);
+    Game selectedGame = givenGame;
 
     ngName.text = selectedGame.name;
     ngDescription.text = selectedGame.description;
@@ -59,14 +75,6 @@ class _GamesEdit extends ConsumerWidget {
                   width: 150,
                   height: 200,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                 'assets/GenericGamePoster.jpg', // Ruta a tu imagen local
-                  width: 100,
-                  height: 150,
-                  fit: BoxFit.cover,
-                  );
-                },
                   );
                 },
               ),
@@ -111,8 +119,7 @@ class _GamesEdit extends ConsumerWidget {
             SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                int index = gameList.indexWhere((game) => game.id == selectedGame.id);
-
+                
                 Game editedGame = Game(
                   id: selectedGame.id,
                   name: ngName.text,
@@ -123,11 +130,9 @@ class _GamesEdit extends ConsumerWidget {
                   studio: selectedGame.studio,
                 );
 
-                final nuevaLista = [...gameList];
-                nuevaLista[index] = editedGame;
-                ref.read(gamesProvider.notifier).state = nuevaLista;
+                ref.read(gameProvider.notifier).editGame(editedGame);
 
-                context.goNamed(GameNewScreen.name);
+                context.goNamed(GameScreen.name);
               },
               child: Text("Editar"),
             ),

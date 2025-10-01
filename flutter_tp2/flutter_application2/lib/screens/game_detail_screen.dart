@@ -150,11 +150,11 @@ class GameDetailScreen extends ConsumerWidget {
         blocked = !blocked;
       },child: Icon(Icons.edit),
       ),
-      FloatingActionButton(onPressed:()
+      FloatingActionButton(onPressed:() async
       {
 
          Navigator.of(context).pop(); // Para cerrarlolo
-        _gameDelete(context,ref,selectedGame.id,);
+        await ref.read(gameProvider.notifier).deleteGame(selectedGame);
       },child: Icon(Icons.delete),
       ),
       ], ///children
@@ -166,14 +166,3 @@ class GameDetailScreen extends ConsumerWidget {
   }
 }
 
-void _gameDelete(BuildContext context,ref, int givenId){
-
-final List<Game> gameList = ref.watch(gamesProvider);
-Game selectedGame = gameList.firstWhere((game) => game.id == givenId);
-int index = gameList.indexWhere((game) => game.id == selectedGame.id);
-
-List<Game> nuevaLista = [...gameList];
-nuevaLista.removeAt(index);
-ref.read(gamesProvider.notifier).state = [...nuevaLista];
-
-}
