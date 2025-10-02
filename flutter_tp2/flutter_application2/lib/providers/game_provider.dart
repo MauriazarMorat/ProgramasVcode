@@ -65,8 +65,7 @@ class GameNotifier extends StateNotifier<List<Game>> {
         fromFirestore: Game.fromFirestore,
         toFirestore: (Game game, _) => game.toFirestore());
     final games = await docs.get();
-    final prestate = games.docs.map((d) => d.data()).toList();
-    prestate.sort((a,b) => a.id.compareTo(b.id)); //Sorteamos para la UI
-    state = prestate;
+    state = games.docs.map((d) => d.data()).toList();
+    
   }
 }
