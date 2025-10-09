@@ -48,7 +48,6 @@ class _GamesEdit extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    List<Game> gameList = ref.watch(gameProvider);
     Game selectedGame = givenGame;
 
     ngName.text = selectedGame.name;

@@ -1,6 +1,4 @@
 import 'package:flutter_application2/providers/game_provider.dart';
-import 'package:flutter_application2/providers/game_provider.dart';
-import 'package:flutter_application2/screens/game_screen.dart';
 import 'package:flutter_application2/screens/game_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

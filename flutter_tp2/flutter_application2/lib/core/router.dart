@@ -4,15 +4,21 @@ import 'package:flutter_application2/screens/login_screen.dart';
 import 'package:flutter_application2/screens/game_detail_screen.dart';
 import 'package:flutter_application2/screens/game_add_screen.dart';
 import 'package:flutter_application2/screens/game_edit_screen.dart';
+import 'package:flutter_application2/screens/prelogin_screen.dart';
 import 'package:flutter_application2/entities/game.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
   routes: [
     GoRoute(
+      name: PreloginScreen.name,
+      path:   '/prelogin',
+      builder: (context, state) => const PreloginScreen(),
+    ),
+    GoRoute(
       name: LoginScreen.name,
       path: '/',
-      builder: (context, state) => const LoginScreen(),
+      builder: (context, state) => LoginScreen(selectedMode: state.extra as String),
     ),
     GoRoute(
       name: GameScreen.name,

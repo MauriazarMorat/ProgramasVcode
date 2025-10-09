@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_application2/entities/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

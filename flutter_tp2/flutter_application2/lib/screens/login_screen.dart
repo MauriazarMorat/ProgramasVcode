@@ -7,7 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoginScreen extends StatelessWidget{
   static const String name = 'login';
-  const LoginScreen({super.key});
+  final String selectedMode;
+  const LoginScreen({super.key, required this.selectedMode});
 
   @override
   Widget build(BuildContext context) {

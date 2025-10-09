@@ -14,7 +14,7 @@ class GameDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context,ref) {
-    final TextEditingController ngName = TextEditingController(text: selectedGame.name);
+  final TextEditingController ngName = TextEditingController(text: selectedGame.name);
   final TextEditingController ngDescription = TextEditingController(text: selectedGame.description);
   final TextEditingController ngPegi = TextEditingController(text: selectedGame.pegi);
   final TextEditingController ngHardDescription = TextEditingController(text: selectedGame.hardDescription);

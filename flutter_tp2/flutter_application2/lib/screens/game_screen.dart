@@ -1,5 +1,4 @@
 import 'package:flutter_application2/providers/game_provider.dart';
-import 'package:flutter_application2/providers/user_provider.dart';
 import 'package:flutter_application2/screens/game_detail_screen.dart';
 import 'package:flutter_application2/screens/game_add_screen.dart';
 import 'package:flutter_application2/screens/game_edit_screen.dart';
@@ -45,7 +44,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 class _GamesView extends StatelessWidget {
   final List<Game> gameList;
 
-  const _GamesView({required this.gameList, super.key});
+  const _GamesView({required this.gameList});
 
   @override
   Widget build(BuildContext context) {
@@ -144,27 +143,6 @@ class _GamesView extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _GameItemView extends StatelessWidget {
-  final Game game;
-
-  const _GameItemView({required this.game});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text(game.name),
-        subtitle: Text(game.description),
-        trailing: const Icon(Icons.arrow_forward_ios),
-        onTap: () {
-          Navigator.of(context).pop();
-          context.pushNamed(GameDetailScreen.name, extra: game.id);
-        },
-      ),
     );
   }
 }
