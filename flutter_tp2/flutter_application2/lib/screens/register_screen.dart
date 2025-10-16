@@ -1,27 +1,30 @@
 import 'package:flutter_application2/providers/usuario_nextprovider.dart';
 import 'package:flutter_application2/screens/game_screen.dart';
+import 'package:flutter_application2/entities/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_application2/entities/usuario.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 //Admin Login:
 // email: 1
 // contra: 1
 
 
-class LoginScreen extends ConsumerStatefulWidget {
-  static const String name = 'login';
-  const LoginScreen({super.key});
+class RegisterScreen extends ConsumerStatefulWidget {
+  static const String name = 'register';
+  const RegisterScreen({super.key});
 
   @override
-  ConsumerState<LoginScreen> createState() => _LoginView();
+  ConsumerState<RegisterScreen> createState() => _RegisterView();
 }
 
-class _LoginView extends ConsumerState<LoginScreen> {
+class _RegisterView extends ConsumerState<RegisterScreen> {
   // Controllers
   final TextEditingController textoEmail = TextEditingController();
   final TextEditingController textoContra = TextEditingController();
+  final TextEditingController textoNombre = TextEditingController();
+  final TextEditingController textoDirec = TextEditingController();
 
   bool textoobscuro = true;
   String resultado = "";
@@ -34,15 +37,31 @@ class _LoginView extends ConsumerState<LoginScreen> {
     ref.read(UsuarioProvider.notifier).getAllUsuarios();
   }
 
-  Usuario? encontrarUsuario(List<Usuario> Usuarios, String usuarioabuscar) {
-    try {
-      return Usuarios.firstWhere((Usuario) => Usuario.email == usuarioabuscar);
-    } catch (_) {
-      return null;
-    }
+
+  void enviar(BuildContext context, List<Usuario> Usuarios) {
+    
+    final emailPuesto = textoEmail.text;
+    final contraPuesta = textoContra.text;
+    final nombrePuesto = textoNombre.text;
+    final direcPuesta = textoDirec.text;
+
+    print('DEBUG: emailPuesto = ' + emailPuesto);
+    print('DEBUG: contraPuesta = ' + contraPuesta);
+    print('DEBUG: nombrePuesto = ' + nombrePuesto);
+    print('DEBUG: direcPuesta = ' + direcPuesta);
+
+    
+
+    Usuario nuevoUsuario = Usuario(
+      email: emailPuesto,
+      nombre: nombrePuesto,
+      direccion: direcPuesta,
+      id: '0',
+      );
+    
+    ref.read(UsuarioProvider.notifier).addUsuario(nuevoUsuario);
+    print('DEBUG: Nuevo Usuario = ' + nuevoUsuario.email);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +69,7 @@ class _LoginView extends ConsumerState<LoginScreen> {
     print('DEBUG: UsuarioList = ' + Usuarios.map((u) => u.email).toList().toString());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Register'),
       ),
       body: Align(
         alignment: Alignment.center,
@@ -92,8 +111,33 @@ class _LoginView extends ConsumerState<LoginScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: 17),
+            SizedBox(
+              width: 200,
+              child: TextField(
+                controller: textoNombre,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Nombre",
+                ),
+              ),
+            ),
+            const SizedBox(height: 17),
+            SizedBox(
+              width: 200,
+              child: TextField(
+                controller: textoDirec,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Direccion",
+                ),
+              ),
+            ),
             const SizedBox(height: 40),
-            
+            ElevatedButton(
+              onPressed: () => enviar(context,Usuarios),
+              child: const Text("Enviar"),
+            ),
           ],
         ),
       ),

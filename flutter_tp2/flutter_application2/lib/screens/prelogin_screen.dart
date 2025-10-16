@@ -1,9 +1,10 @@
-import 'package:flutter_application2/providers/user_provider.dart';
+import 'package:flutter_application2/providers/usuario_provider.dart';
 import 'package:flutter_application2/screens/game_screen.dart';
 import 'package:flutter_application2/screens/login_screen.dart';
+import 'package:flutter_application2/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_application2/entities/user.dart';
+import 'package:flutter_application2/entities/usuario.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
@@ -27,14 +28,14 @@ class _PreloginView extends StatelessWidget {
         children: [
           ElevatedButton(
             onPressed: () {
-              context.pushNamed(LoginScreen.name, extra: 'login');
+              context.pushNamed(LoginScreen.name);
             },
             child: const Text('Login'),
           ),
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              context.pushNamed(LoginScreen.name, extra: 'register');
+              context.pushNamed(RegisterScreen.name);
             },
             child: const Text('Register'),
           ),

@@ -1,6 +1,7 @@
 
 import 'package:flutter_application2/screens/game_screen.dart';
 import 'package:flutter_application2/screens/login_screen.dart';
+import 'package:flutter_application2/screens/register_screen.dart';
 import 'package:flutter_application2/screens/game_detail_screen.dart';
 import 'package:flutter_application2/screens/game_add_screen.dart';
 import 'package:flutter_application2/screens/game_edit_screen.dart';
@@ -12,13 +13,18 @@ final appRouter = GoRouter(
   routes: [
     GoRoute(
       name: PreloginScreen.name,
-      path:   '/prelogin',
+      path:   '/',
       builder: (context, state) => const PreloginScreen(),
     ),
     GoRoute(
       name: LoginScreen.name,
-      path: '/',
-      builder: (context, state) => LoginScreen(selectedMode: state.extra as String),
+      path: '/login',
+      builder: (context, state) => const LoginScreen(),
+    ),
+    GoRoute(
+      name: RegisterScreen.name,
+      path: '/register',
+      builder: (context, state) => const RegisterScreen(),
     ),
     GoRoute(
       name: GameScreen.name,

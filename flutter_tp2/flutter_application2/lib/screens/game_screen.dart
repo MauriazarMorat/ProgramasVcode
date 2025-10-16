@@ -1,12 +1,12 @@
 import 'package:flutter_application2/providers/game_provider.dart';
-import 'package:flutter_application2/providers/user_nextprovider.dart';
+import 'package:flutter_application2/providers/usuario_nextprovider.dart';
 import 'package:flutter_application2/screens/game_detail_screen.dart';
 import 'package:flutter_application2/screens/game_add_screen.dart';
 import 'package:flutter_application2/screens/game_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_application2/entities/game.dart';
-import 'package:flutter_application2/entities/user.dart';
+import 'package:flutter_application2/entities/usuario.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
@@ -27,11 +27,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   @override
   Widget build(BuildContext context) {
     List<Game> gameList = ref.watch(gameProvider);
-    User currentUser = ref.watch(userProvider.notifier).currentUser;
+    Usuario currentUsuario = ref.watch(UsuarioProvider.notifier).currentUsuario;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome ${currentUser.nombre}!'),
+        title: Text('Welcome ${currentUsuario.nombre}!'),
       ),
       body: _GamesView(gameList: gameList),
       floatingActionButton: FloatingActionButton(

@@ -1,38 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-class User {
+class Usuario {
   String email;
-  String contrasena;
   String nombre;
   String direccion;
+  String id;
 
-  User({
+  Usuario({
     required this.email,
-    required this.contrasena,
     required this.nombre,
     required this.direccion,
+    required this.id,
   });
 
   // Convierte a Map para Firestore
   Map<String, dynamic> toFirestore() {
     return {
       'email': email,
-      'contrasena': contrasena,
       'nombre': nombre,
       'direccion': direccion,
+      'id': id,
     };
   }
 
-  // Crea un User desde Firestore
-  static User fromFirestore(
+  // Crea un Usuario desde Firestore
+  static Usuario fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) {
     final data = snapshot.data();
-    return User(
+    return Usuario(
       email: data?['email'] ?? '',
-      contrasena: data?['contrasena'] ?? '',
       nombre: data?['nombre'] ?? '',
       direccion: data?['direccion'] ?? '',
+      id: data?['id'] ?? '',
     );
   }
 }
