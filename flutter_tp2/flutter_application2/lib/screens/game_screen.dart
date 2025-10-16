@@ -1,10 +1,12 @@
 import 'package:flutter_application2/providers/game_provider.dart';
+import 'package:flutter_application2/providers/user_provider.dart';
 import 'package:flutter_application2/screens/game_detail_screen.dart';
 import 'package:flutter_application2/screens/game_add_screen.dart';
 import 'package:flutter_application2/screens/game_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_application2/entities/game.dart';
+import 'package:flutter_application2/entities/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
@@ -25,10 +27,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   @override
   Widget build(BuildContext context) {
     List<Game> gameList = ref.watch(gameProvider);
+    User currentUser = ref.watch(userProvider.notifier).currentUser;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Games'),
+        title: Text('Welcome ${currentUser.nombre}!'),
       ),
       body: _GamesView(gameList: gameList),
       floatingActionButton: FloatingActionButton(
@@ -143,6 +146,27 @@ class _GamesView extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _GameItemView extends StatelessWidget {
+  final Game game;
+
+  const _GameItemView({required this.game});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        title: Text(game.name),
+        subtitle: Text(game.description),
+        trailing: const Icon(Icons.arrow_forward_ios),
+        onTap: () {
+          Navigator.of(context).pop();
+          context.pushNamed(GameDetailScreen.name, extra: game.id);
+        },
+      ),
     );
   }
 }

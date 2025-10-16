@@ -6,19 +6,25 @@ final userProvider = StateNotifierProvider<UserNotifier, List<User>>(
   (ref) => UserNotifier(FirebaseFirestore.instance),
 );
 
-
 class UserNotifier extends StateNotifier<List<User>> {
   final FirebaseFirestore db;
 
-  UserNotifier(this.db) : super([]);
+  UserNotifier(this.db)
+      : _currentUser = User(nombre: '', email: '', contrasena: '',direccion: ''),
+        super([]);
 
-
-  Future<void> getAllGames() async {
+  Future<void> getAllUsers() async {
     final docs = db.collection('users').withConverter(
         fromFirestore: User.fromFirestore,
         toFirestore: (User user, _) => user.toFirestore());
     final users = await docs.get();
-    final prestate = users.docs.map((d) => d.data()).toList();
-    state = prestate;
+    state = users.docs.map((d) => d.data()).toList();
+  }
+
+  // Now always non-nullable
+  User _currentUser;
+  User get currentUser => _currentUser;
+  void setCurrentUser(User user) {
+    _currentUser = user;
   }
 }
