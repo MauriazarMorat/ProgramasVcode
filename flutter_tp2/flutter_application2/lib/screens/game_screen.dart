@@ -1,5 +1,5 @@
 import 'package:flutter_application2/providers/game_provider.dart';
-import 'package:flutter_application2/providers/user_provider.dart';
+import 'package:flutter_application2/providers/user_nextprovider.dart';
 import 'package:flutter_application2/screens/game_detail_screen.dart';
 import 'package:flutter_application2/screens/game_add_screen.dart';
 import 'package:flutter_application2/screens/game_edit_screen.dart';
