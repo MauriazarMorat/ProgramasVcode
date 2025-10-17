@@ -30,16 +30,55 @@ class UsuarioNotifier extends StateNotifier<List<Usuario>> {
     _currentUsuario = usuario;
   }
   
-  Future<void> createWithPassword(String email, String contrasena) async {
+  Future<String> createWithPassword(String email, String contrasena) async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email, 
         password: contrasena,
       );
+      return("Succesfully created User");
     } on FirebaseAuthException catch (e) {
-      print('Error creating user: $e');
+    // acá evaluamos los posibles errores comunes
+    if (e.code == 'weak-password') {
+      return "La contraseña es demaciado debil";
+    } else if (e.code == 'email-already-in-use') {
+      return "Ese email ya está registrado";
+    } else {
+      // cualquier otro error no previsto
+      return "Ocurrió un error inesperado";
     }
+  } catch (e) {
+    // errores no relacionados con FirebaseAuth
+    return "Error al crear el usuario";
   }
+}
+
+  Future<String> signinWithPassword(String email, String contrasena) async {
+    try {
+      final userCredential =
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email, 
+        password: contrasena,
+      );
+
+      final user = userCredential.user;
+      
+      return("Succesfully created User");
+    } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      return('No existe un usuario con ese email');
+    } else if (e.code == 'wrong-password') {
+      return('La contraseña esta mal');
+    } else {
+      return("Ocurrio un error inesperado");
+    }
+    } catch (e) {
+      // errores no relacionados con FirebaseAuth
+      return "Error al crear el usuario";
+  }
+}
+
+
 
   Future<void> addUsuario(Usuario usuario) async {
     final doc = db.collection('users').doc(); //Con esto nos paramos en el doc entero. 

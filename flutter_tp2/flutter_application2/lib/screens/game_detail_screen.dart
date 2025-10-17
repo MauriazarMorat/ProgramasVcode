@@ -14,7 +14,7 @@ class GameDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context,ref) {
-  final TextEditingController ngName = TextEditingController(text: selectedGame.name);
+    final TextEditingController ngName = TextEditingController(text: selectedGame.name);
   final TextEditingController ngDescription = TextEditingController(text: selectedGame.description);
   final TextEditingController ngPegi = TextEditingController(text: selectedGame.pegi);
   final TextEditingController ngHardDescription = TextEditingController(text: selectedGame.hardDescription);
@@ -152,8 +152,7 @@ class GameDetailScreen extends ConsumerWidget {
       ),
       FloatingActionButton(onPressed:() async
       {
-
-         Navigator.of(context).pop(); // Para cerrarlolo
+                Navigator.of(context).pop(); // Para cerrarlolo
         await ref.read(gameProvider.notifier).deleteGame(selectedGame);
       },child: Icon(Icons.delete),
       ),

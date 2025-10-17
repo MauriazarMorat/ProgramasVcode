@@ -2,6 +2,7 @@ import 'package:flutter_application2/providers/usuario_nextprovider.dart';
 import 'package:flutter_application2/screens/game_screen.dart';
 import 'package:flutter_application2/entities/usuario.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application2/screens/prelogin_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,8 +38,8 @@ class _RegisterView extends ConsumerState<RegisterScreen> {
     ref.read(UsuarioProvider.notifier).getAllUsuarios();
   }
 
-
-  void enviar(BuildContext context, List<Usuario> Usuarios) {
+  //Declaramos enviar como un future void con async porque adentor va a haber una funcion await.
+  Future<void> enviar(BuildContext context) async {
     
     final emailPuesto = textoEmail.text;
     final contraPuesta = textoContra.text;
@@ -50,8 +51,6 @@ class _RegisterView extends ConsumerState<RegisterScreen> {
     print('DEBUG: nombrePuesto = ' + nombrePuesto);
     print('DEBUG: direcPuesta = ' + direcPuesta);
 
-    
-
     Usuario nuevoUsuario = Usuario(
       email: emailPuesto,
       nombre: nombrePuesto,
@@ -59,14 +58,26 @@ class _RegisterView extends ConsumerState<RegisterScreen> {
       id: '0',
       );
     
-    ref.read(UsuarioProvider.notifier).addUsuario(nuevoUsuario);
-    print('DEBUG: Nuevo Usuario = ' + nuevoUsuario.email);
-  }
+    final message = await ref.read(UsuarioProvider.notifier).createWithPassword(emailPuesto, contraPuesta);
+    
+    if (message == ("Succesfully created User")){
+      ref.read(UsuarioProvider.notifier).addUsuario(nuevoUsuario);
+      context.pushNamed(PreloginScreen.name);
+      
+    } 
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 2), // tiempo que dura visible
+      ),
+    );
+
+    
+    }
 
   @override
   Widget build(BuildContext context) {
-    final Usuarios = ref.watch(UsuarioProvider);
-    print('DEBUG: UsuarioList = ' + Usuarios.map((u) => u.email).toList().toString());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Register'),
@@ -77,7 +88,7 @@ class _RegisterView extends ConsumerState<RegisterScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 60),
-            const Text("Logeate", style: TextStyle(fontSize: 40, color: Colors.black)),
+            const Text("Registrate", style: TextStyle(fontSize: 40, color: Colors.black)),
             const SizedBox(height: 40),
             SizedBox(
               width: 200,
@@ -135,7 +146,7 @@ class _RegisterView extends ConsumerState<RegisterScreen> {
             ),
             const SizedBox(height: 40),
             ElevatedButton(
-              onPressed: () => enviar(context,Usuarios),
+              onPressed: () async => enviar(context),
               child: const Text("Enviar"),
             ),
           ],

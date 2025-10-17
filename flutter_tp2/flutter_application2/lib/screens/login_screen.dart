@@ -41,14 +41,19 @@ class _LoginView extends ConsumerState<LoginScreen> {
       return null;
     }
   }
+  
+  void enviar(context){
+    final emailPuesto = textoEmail.text;
+    final contraPuesta = textoContra.text;
 
+
+
+  }
 
 
   @override
   Widget build(BuildContext context) {
-    final Usuarios = ref.watch(UsuarioProvider);
-    print('DEBUG: UsuarioList = ' + Usuarios.map((u) => u.email).toList().toString());
-    return Scaffold(
+       return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
       ),
@@ -93,7 +98,10 @@ class _LoginView extends ConsumerState<LoginScreen> {
               ),
             ),
             const SizedBox(height: 40),
-            
+            ElevatedButton(
+              onPressed: () async => enviar(context),
+              child: const Text("Enviar"),
+            ),
           ],
         ),
       ),
