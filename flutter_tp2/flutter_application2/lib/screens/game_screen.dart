@@ -27,7 +27,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   @override
   Widget build(BuildContext context) {
     List<Game> gameList = ref.watch(gameProvider);
-    Usuario currentUsuario = ref.watch(UsuarioProvider.notifier).currentUsuario;
+    final currentUsuario = ref.watch(UsuarioProvider.notifier).buscarUsuario;
 
     return Scaffold(
       appBar: AppBar(

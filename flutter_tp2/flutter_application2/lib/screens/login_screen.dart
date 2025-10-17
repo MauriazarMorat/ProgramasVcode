@@ -31,7 +31,7 @@ class _LoginView extends ConsumerState<LoginScreen> {
   void initState() {
     super.initState();
     // Fetch Usuarios from provider
-    ref.read(UsuarioProvider.notifier).getAllUsuarios();
+    
   }
 
   Usuario? encontrarUsuario(List<Usuario> Usuarios, String usuarioabuscar) {

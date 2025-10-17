@@ -35,7 +35,7 @@ class _RegisterView extends ConsumerState<RegisterScreen> {
   void initState() {
     super.initState();
     // Fetch Usuarios from provider
-    ref.read(UsuarioProvider.notifier).getAllUsuarios();
+    
   }
 
   //Declaramos enviar como un future void con async porque adentor va a haber una funcion await.
