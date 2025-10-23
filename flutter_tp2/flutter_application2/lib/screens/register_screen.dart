@@ -56,6 +56,7 @@ class _RegisterView extends ConsumerState<RegisterScreen> {
       nombre: nombrePuesto,
       direccion: direcPuesta,
       id: '0',
+      favs: [],
       );
     
     final message = await ref.read(UsuarioProvider.notifier).createWithPassword(emailPuesto, contraPuesta);

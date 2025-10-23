@@ -27,11 +27,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   @override
   Widget build(BuildContext context) {
     List<Game> gameList = ref.watch(gameProvider);
-    final currentUsuario = ref.watch(UsuarioProvider.notifier).buscarUsuario;
+    final usuario = ref.watch(UsuarioProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome ${currentUsuario.nombre}!'),
+        title: Text('Welcome ${usuario.nombre}!'),
+        
       ),
       body: _GamesView(gameList: gameList),
       floatingActionButton: FloatingActionButton(
@@ -78,6 +79,14 @@ class _GamesView extends StatelessWidget {
                         ListTile(
                           leading: Icon(Icons.remove),
                           title: Text("Eliminar"),
+                          onTap: () async {
+                            Navigator.of(context).pop();
+                            await ref.read(gameProvider.notifier).deleteGame(game);
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.star),
+                          title: Text("Favoritos"),
                           onTap: () async {
                             Navigator.of(context).pop();
                             await ref.read(gameProvider.notifier).deleteGame(game);

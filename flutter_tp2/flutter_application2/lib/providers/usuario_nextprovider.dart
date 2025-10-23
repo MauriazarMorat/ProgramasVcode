@@ -1,16 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application2/entities/usuario.dart';
+import 'package:flutter_application2/entities/game.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final UsuarioProvider = StateNotifierProvider<UsuarioNotifier, User?>(
+final UsuarioProvider = StateNotifierProvider<UsuarioNotifier, Usuario>(
   (ref) => UsuarioNotifier(FirebaseFirestore.instance),
 );
 
-class UsuarioNotifier extends StateNotifier<User?> {
+class UsuarioNotifier extends StateNotifier<Usuario> {
   final FirebaseFirestore db;
 
-  UsuarioNotifier(this.db):super(null);
+  UsuarioNotifier(this.db):super(
+    Usuario(  
+      id: '', 
+      nombre: '', 
+      email: '',  
+      direccion: '', 
+      favs: [],
+      )
+    );
   
   Future<String> createWithPassword(String email, String contrasena) async {
     try {
@@ -37,15 +46,16 @@ class UsuarioNotifier extends StateNotifier<User?> {
 
   Future<String> signinWithPassword(String email, String contrasena) async {
     try {
+      print("DEBUG: Intentando iniciar sesión con email: $email");
       final userCredential =
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email, 
         password: contrasena,
       );
-
-      state = userCredential.user;
-      
-      return("Succesfully created User");
+      print("DEBUG: INICIADO SECION CON EMAIL: ${userCredential.user?.email}");
+      final usuario = await buscarUsuario(userCredential.user!);
+      state = usuario;
+      return("Succesfully signed in");
     } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
       return('No existe un usuario con ese email');
@@ -56,7 +66,7 @@ class UsuarioNotifier extends StateNotifier<User?> {
     }
     } catch (e) {
       // errores no relacionados con FirebaseAuth
-      return "Error al crear el usuario";
+      return "Error al iniciar sesión";
   }
 }
 
@@ -71,9 +81,11 @@ class UsuarioNotifier extends StateNotifier<User?> {
       print(e);
     }
   }
+
+  
   
   Future<Usuario> buscarUsuario(User user) async{
-    
+    try {
     final docs = db.collection('users').withConverter(
         fromFirestore: Usuario.fromFirestore,
         toFirestore: (Usuario usuario, _) => usuario.toFirestore());
@@ -82,6 +94,14 @@ class UsuarioNotifier extends StateNotifier<User?> {
 
     final Current = listaUsuarios.firstWhere((u) => u.email == user.email);
     return Current;
-    
-  }
+     } catch (e) {
+      return Usuario(  
+        id: '', 
+        nombre: 'Failure', 
+        email: '',  
+        direccion: '', 
+        favs: [],
+        );
+       }
+       }
 }

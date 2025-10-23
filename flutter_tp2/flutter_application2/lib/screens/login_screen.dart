@@ -42,12 +42,23 @@ class _LoginView extends ConsumerState<LoginScreen> {
     }
   }
   
-  void enviar(context){
+  void enviar(BuildContext context) async {
     final emailPuesto = textoEmail.text;
     final contraPuesta = textoContra.text;
+    final mensaje = await ref.read(UsuarioProvider.notifier).signinWithPassword(emailPuesto, contraPuesta);
 
+    if (mensaje == ("Succesfully signed in")){
+      context.pushNamed(GameScreen.name);
+    } 
 
-
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(mensaje),
+        duration: Duration(seconds: 2), // tiempo que dura visible
+      ),
+    );
+       
+   
   }
 
 

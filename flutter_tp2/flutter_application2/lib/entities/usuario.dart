@@ -1,15 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application2/entities/game.dart';
 class Usuario {
   String email;
   String nombre;
   String direccion;
   String id;
+  List<String> favs; //Una lista de strings de ID de juegos favoritos
 
   Usuario({
     required this.email,
     required this.nombre,
     required this.direccion,
     required this.id,
+    required this.favs,
   });
 
   // Convierte a Map para Firestore
@@ -19,6 +22,7 @@ class Usuario {
       'nombre': nombre,
       'direccion': direccion,
       'id': id,
+      'favs': favs,
     };
   }
 
@@ -33,6 +37,7 @@ class Usuario {
       nombre: data?['nombre'] ?? '',
       direccion: data?['direccion'] ?? '',
       id: data?['id'] ?? '',
+      favs: data?['favs'] ?? '',
     );
   }
 }
