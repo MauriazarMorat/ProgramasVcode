@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_application2/providers/game_provider.dart';
 import 'package:flutter_application2/providers/usuario_nextprovider.dart';
-import 'package:flutter_application2/screens/favs_screen.dart';
 import 'package:flutter_application2/screens/game_detail_screen.dart';
 import 'package:flutter_application2/screens/game_add_screen.dart';
 import 'package:flutter_application2/screens/game_edit_screen.dart';
@@ -10,15 +10,15 @@ import 'package:flutter_application2/entities/game.dart';
 import 'package:flutter_application2/entities/usuario.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GameScreen extends ConsumerStatefulWidget {
-  static const String name = 'game';
-  const GameScreen({super.key});
+class FavsScreen extends ConsumerStatefulWidget {
+  static const String name = 'Favs';
+  const FavsScreen({super.key});
 
   @override
-  ConsumerState<GameScreen> createState() => _GameScreenState();
+  ConsumerState<FavsScreen> createState() => _FavsScreenState();
 }
 
-class _GameScreenState extends ConsumerState<GameScreen> {
+class _FavsScreenState extends ConsumerState<FavsScreen> {
   @override
   void initState() {
     super.initState();
@@ -29,6 +29,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   Widget build(BuildContext context) {
     List<Game> gameList = ref.watch(gameProvider);
     final usuario = ref.watch(UsuarioProvider);
+    List<Game> gameFavs = ref.watch(gameProvider.notifier).getFavoriteGames(usuario,gameList);
 
     return Scaffold(
       appBar: AppBar(
@@ -37,15 +38,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           IconButton(
           icon: Icon(Icons.person),
           onPressed: () {
-              context.pushNamed(FavsScreen.name);
+
           }
           )
         ],
       ),
-      body: _GamesView(gameList: gameList, usuario: usuario),
+      body: _GamesView(gameFavs: gameFavs, usuario: usuario),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          context.pushNamed(GameAddScreen.name, extra: gameList.length);
+          context.pushNamed(GameAddScreen.name, extra: gameFavs.length);
         },
         child: const Icon(Icons.add),
       ),
@@ -54,16 +55,16 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 }
 
 class _GamesView extends StatelessWidget {
-  final List<Game> gameList;
+  final List<Game> gameFavs;
   final Usuario usuario;
-  const _GamesView({required this.gameList, required this.usuario});
+  const _GamesView({required this.gameFavs, required this.usuario});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: gameList.length,
+      itemCount: gameFavs.length,
       itemBuilder: (context, index) {
-        final game = gameList[index];
+        final game = gameFavs[index];
 
         return GestureDetector(
           onLongPress: () {
@@ -170,5 +171,3 @@ class _GamesView extends StatelessWidget {
     );
   }
 }
-
-

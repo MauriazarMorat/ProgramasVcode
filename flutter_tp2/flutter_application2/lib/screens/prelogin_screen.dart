@@ -1,4 +1,3 @@
-import 'package:flutter_application2/providers/usuario_provider.dart';
 import 'package:flutter_application2/screens/game_screen.dart';
 import 'package:flutter_application2/screens/login_screen.dart';
 import 'package:flutter_application2/screens/register_screen.dart';

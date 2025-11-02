@@ -37,7 +37,7 @@ class Usuario {
       nombre: data?['nombre'] ?? '',
       direccion: data?['direccion'] ?? '',
       id: data?['id'] ?? '',
-      favs: data?['favs'] ?? '',
+      favs: List<String>.from(data?['favs'] ?? ''), //Esto es porque firebase devuelve una lista 
     );
   }
 }

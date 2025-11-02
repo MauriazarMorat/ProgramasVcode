@@ -46,13 +46,13 @@ class UsuarioNotifier extends StateNotifier<Usuario> {
 
   Future<String> signinWithPassword(String email, String contrasena) async {
     try {
-      print("DEBUG: Intentando iniciar sesión con email: $email");
+    
       final userCredential =
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email, 
         password: contrasena,
       );
-      print("DEBUG: INICIADO SECION CON EMAIL: ${userCredential.user?.email}");
+    
       final usuario = await buscarUsuario(userCredential.user!);
       state = usuario;
       return("Succesfully signed in");
@@ -95,6 +95,9 @@ class UsuarioNotifier extends StateNotifier<Usuario> {
     final Current = listaUsuarios.firstWhere((u) => u.email == user.email);
     return Current;
      } catch (e) {
+      print("DEBUG ERRORES: ");
+      print(e);
+      print("DEBUG ARRIBA: ");
       return Usuario(  
         id: '', 
         nombre: 'Failure', 
@@ -103,5 +106,33 @@ class UsuarioNotifier extends StateNotifier<Usuario> {
         favs: [],
         );
        }
-       }
+  }
+  Future<void> favoriteGame(Usuario user, Game game) async{
+    final doc = db.collection('users').doc(user.id);  
+    try {
+      List<String> nuevalista = user.favs;
+      if (nuevalista.contains(game.id)){
+        //Si esta en favoritos
+      nuevalista.remove(game.id);
+      }else{
+        // No esta en favoritos.
+      nuevalista.add(game.id);
+      }
+      
+      Usuario newuser = Usuario(
+        email: user.email,
+        nombre: user.nombre,
+        id: user.id,
+        direccion: user.direccion,
+        favs: nuevalista,
+        );
+      await doc.set(newuser.toFirestore());
+      
+     } catch (e) {
+      print("DEBUG ERRORES: ");
+      print(e);
+      print("DEBUG ARRIBA: ");
+      
+  }
+   }
 }

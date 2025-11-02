@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application2/entities/game.dart';
+import 'package:flutter_application2/entities/usuario.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
@@ -25,8 +26,8 @@ class GameNotifier extends StateNotifier<List<Game>> {
 
   Future<void> editGame(Game editedgame) async {
     //Aprendi que era una query y al final no uso eso..
-
-    final doc= db.collection('games').doc(editedgame.id);  //Hacemos un doc nuevo
+  
+    final doc= db.collection('games').doc(editedgame.id);  //NOS PONEMOS EN EL DOC CON ESE ID
     try {
       
       await doc.set(editedgame.toFirestore()); //Lo setamos Parandonos encima del documento
@@ -56,6 +57,7 @@ class GameNotifier extends StateNotifier<List<Game>> {
   }
   
   
+  
     }
   //Tenemos que sortear porque adentro de la firestorgae esta todo desordeado porque tienen ID internos.
   //Entonces hacemos un sort para que se vea mejor cuando en relaidad no importa.
@@ -67,4 +69,21 @@ class GameNotifier extends StateNotifier<List<Game>> {
     state = games.docs.map((d) => d.data()).toList();
     
   }
+
+  List<Game> getFavoriteGames(Usuario usuario, List<Game> gameList) {
+    try {
+   
+    List<String> favorites = usuario.favs;
+    List<Game> favgames = 
+    gameList.where((g) => favorites.contains(g.id)).toList(); 
+    //Hacemos favgames con los objetos de gamelist que, la lista de ids contiene a esos ID.
+
+    return favgames;
+    }catch (e){
+      return [];
+    }
+  }
+
+
+
 }
