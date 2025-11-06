@@ -131,7 +131,7 @@ class _GamesEdit extends ConsumerWidget {
 
                 ref.read(gameProvider.notifier).editGame(editedGame);
 
-                context.goNamed(GameScreen.name);
+                context.pop();
               },
               child: Text("Editar"),
             ),

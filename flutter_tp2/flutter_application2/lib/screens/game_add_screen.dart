@@ -121,7 +121,7 @@ class _GamesAdd extends ConsumerWidget {
                   studio: ngStudio.text,
                 );
                 await ref.read(gameProvider.notifier).addGame(newGame);
-                context.goNamed(GameScreen.name);
+                context.pop();
               },
               child: Text("Agregar"),
             ),

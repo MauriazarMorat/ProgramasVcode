@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_application2/entities/game.dart';
 import 'package:flutter_application2/entities/usuario.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_application2/screens/user_screen.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
   static const String name = 'game';
@@ -37,7 +38,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           IconButton(
           icon: Icon(Icons.person),
           onPressed: () {
-              context.pushNamed(FavsScreen.name);
+              context.pushNamed(UserScreen.name);
           }
           )
         ],
