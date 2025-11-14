@@ -107,6 +107,20 @@ class UsuarioNotifier extends StateNotifier<Usuario> {
         );
        }
   }
+  Future<void> logOut() async {
+    try{
+    await FirebaseAuth.instance.signOut();
+    state = Usuario(  
+      id: '', 
+      nombre: '', 
+      email: '',  
+      direccion: '', 
+      favs: [],
+      );
+      } catch (e) {
+      print(e);
+      }
+   }
   Future<void> favoriteGame(Usuario user, Game game) async{
     final doc = db.collection('users').doc(user.id);  
     try {

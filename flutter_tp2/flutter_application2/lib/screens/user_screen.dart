@@ -37,8 +37,11 @@ class _UserScreenState extends ConsumerState<UserScreen> {
       appBar: AppBar(
         title: Text('Welcome ${usuario.nombre}!'),
       ),
-      body: _UserView(gameList: gameList, usuario: usuario),
-    
+      body: _UserView(
+        gameList: gameList,
+        usuario: usuario,
+        ref: ref, 
+      ),
     );
   }
 }
@@ -46,16 +49,18 @@ class _UserScreenState extends ConsumerState<UserScreen> {
 class _UserView extends StatelessWidget {
   final List<Game> gameList;
   final Usuario usuario;
-  const _UserView({required this.gameList, required this.usuario});
+  final WidgetRef ref; 
+
+  const _UserView({
+    required this.gameList,
+    required this.usuario,
+    required this.ref,
+  });
 
   Future<void> LogOut(BuildContext context) async {
-    
-    // Aquí puedes agregar la lógica para cerrar sesión si es necesario
-    context.goNamed(PreloginScreen.name); // Navega a la pantalla de login
+    ref.read(UsuarioProvider.notifier).logOut(); 
+    context.goNamed(PreloginScreen.name);
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +72,16 @@ class _UserView extends StatelessWidget {
           SizedBox(height: 20),
           Text('Name: ${usuario.nombre}', style: TextStyle(fontSize: 18)),
           Text('Email: ${usuario.email}', style: TextStyle(fontSize: 18)),
-          Text('Email: ${usuario.direccion}', style: TextStyle(fontSize: 18)),
-          // Add more user details as needed
+          Text('Direccion: ${usuario.direccion}', style: TextStyle(fontSize: 18)),
           ElevatedButton(
-              onPressed: () async => LogOut(context),
-              child: const Text("Log Out"),
-            ),
+            onPressed: () async => LogOut(context),
+            child: const Text("Log Out"),
+          ),
+          ElevatedButton(
+            onPressed: () async => 
+            context.pushNamed(FavsScreen.name),
+            child: const Text("Favorites"),
+          ),
         ],
       ),
     );

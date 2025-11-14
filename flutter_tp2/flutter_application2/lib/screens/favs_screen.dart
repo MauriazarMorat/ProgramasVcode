@@ -34,14 +34,6 @@ class _FavsScreenState extends ConsumerState<FavsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Welcome ${usuario.nombre}!'),
-        actions: [
-          IconButton(
-          icon: Icon(Icons.person),
-          onPressed: () {
-
-          }
-          )
-        ],
       ),
       body: _GamesView(gameFavs: gameFavs, usuario: usuario),
       floatingActionButton: FloatingActionButton(

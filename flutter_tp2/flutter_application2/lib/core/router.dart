@@ -8,6 +8,7 @@ import 'package:flutter_application2/screens/game_edit_screen.dart';
 import 'package:flutter_application2/screens/prelogin_screen.dart';
 import 'package:flutter_application2/screens/favs_screen.dart';
 import 'package:flutter_application2/entities/game.dart';
+import 'package:flutter_application2/screens/user_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
@@ -51,6 +52,11 @@ final appRouter = GoRouter(
       name: FavsScreen.name,
       path: '/favs',
       builder: (context, state) => const FavsScreen(),
+      ),
+      GoRoute(
+      name: UserScreen.name,
+      path: '/user',
+      builder: (context, state) => const UserScreen(),
       ),
       
 
